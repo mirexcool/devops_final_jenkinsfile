@@ -29,5 +29,16 @@ pipeline {
                     }
             }
         }
+        
+        stage('artifact-to-web-server') {
+            steps {
+              
+               sshagent(['deploy-user']) {
+                    sh "scp -o StrictHostKeyChecking=no target/blog-app.war ec2-user@13.39.51.233:/opt/tomcat/webapps"
+                    
+
+                }
+            }
+        }
     }
 }
