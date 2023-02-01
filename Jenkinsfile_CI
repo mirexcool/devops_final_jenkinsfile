@@ -52,7 +52,7 @@ pipeline {
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'deploy-to-s3', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                         sh 'aws s3 ls'
                         sh 'aws s3 cp target/blog-app.war s3://epam-final-project'
-                        sh 'aws s3 cp target/blog-app.war s3://epam-final-project/Jenkins-Build-${BUILD_ID}'
+                        sh 'aws s3 cp target/blog-app.war s3://epam-final-project/Jenkins-Build-${BUILD_ID}.war'
                     }
             }
         }
