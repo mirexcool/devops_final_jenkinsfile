@@ -39,7 +39,7 @@ pipeline {
                         git clone https://github.com/mirexcool/final_project_ansible.git /home/ec2-user/ansible
                         cp blog-app.war /home/ec2-user/ansible/ROOT.war
                         cd /home/ec2-user/ansible
-                        ansible-playbook deploy_war.yml
+                        ansible-playbook deploy_to_tomcat.yml
                         rm -f ROOT.war
                         cd /home/ec2-user
                         sudo rm -r ansible
