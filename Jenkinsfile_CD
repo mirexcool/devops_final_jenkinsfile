@@ -43,9 +43,13 @@ pipeline {
                         rm -f ROOT.war
                         cd /home/ec2-user
                         sudo rm -r ansible
+                        #Pause for tomcat updating
+                        sleep(15)
                    '''
                 }
             }
         }
+
+
     }
 }
