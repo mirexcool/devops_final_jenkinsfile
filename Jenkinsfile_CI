@@ -1,0 +1,66 @@
+pipeline {
+    agent {
+    node {
+        label 'Java-Agent'
+    }
+}
+
+    stages {
+        stage('cloning-sources-fron-github') {
+            steps {
+                echo 'Start clonning remote repository . . . '
+                git branch: 'main', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
+                echo 'Finished clonning remote repository . . . '
+            }
+        }
+        
+        stage('Code-static-analysis') {
+            steps {
+                script{
+                    def continueBuild = true
+                    // Here we can launch some modules to check the code for syntax error or other.
+                    // ----- some code block -----
+                    if (!continueBuild) {
+                        currentBuild.result = 'ABORTED'
+                        error('Static code cheking failure . . .')
+                    }
+                }
+                
+            }
+        }
+        
+        stage('mvn-compile') {
+            steps {
+                sh 'mvn clean compile'
+            }
+        }
+        
+        stage('mvn-test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        
+        stage('mvn-build-artifact') {
+            steps {
+                sh 'mvn package'
+            }
+        }
+        
+        stage('artifact-to-s3') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'deploy-to-s3', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh 'aws s3 ls'
+                        sh 'aws s3 cp target/blog-app.war s3://epam-final-project' 
+                    }
+            }
+        }
+
+        stage ('procced-to-test-stage?') {
+            steps {
+                input 'Do you want to continue? You will launch CD proccess . . .'
+                build 'Final Project CD (DEV STAGE)'
+            }
+        }
+    }
+}
