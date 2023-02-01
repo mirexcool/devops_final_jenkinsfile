@@ -59,7 +59,7 @@ pipeline {
         stage ('procced-to-test-stage?') {
             steps {
                 input 'Do you want to continue? You will launch CD proccess . . .'
-                build 'Final Project CD (DEV STAGE)'
+                build 'Final_Project_CD'
             }
         }
     }

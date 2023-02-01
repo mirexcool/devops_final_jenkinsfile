@@ -1,0 +1,40 @@
+pipeline {
+    agent {
+    node {
+        label 'built-in'
+    }
+}
+
+    stages {
+        stage('download-artifact-from-s3') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'deploy-to-s3', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh 'aws s3 ls'
+                        sh 'aws s3 cp s3://epam-final-project/blog-app.war ../DeployToBeanstalk/target/blog-app.war'
+                    }
+            }
+        }
+        stage('test-is-artifact-present') {
+            steps{
+                sh '''  result=`ls ../DeployToBeanstalk/target | grep -x "blog-app.war" | wc -l`
+                        echo $result
+                        
+                        if [ "$result" = "1" ]
+                        then
+                            echo "TEST PASSED"
+                        else
+                            echo "TEST FAILED ! ! !"
+                            exit 1
+                        fi  
+                '''
+            }
+        }
+
+        stage ('deploy-to-aws-ebs') {
+            steps {
+                input 'Do you want to continue?'
+                build 'DeployToBeanstalk'
+            }
+        }
+    }
+}

@@ -1,0 +1,51 @@
+pipeline {
+    agent {
+    node {
+        label 'Ansible_Master'
+    }
+}
+    stages {
+        stage('get-artifact-from-s3-storage') {
+            steps {
+                sh "rm -f blog-app.war"
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'deploy-to-s3', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+                        sh 'aws s3 ls'
+                        sh 'aws s3 cp s3://epam-final-project/blog-app.war .' 
+                    }
+            }
+        }
+        
+        stage('test-artifact-delivered') {
+            steps{
+                sh '''  result=`ls | grep blog-app.war | wc -l`
+                        echo $result
+                        
+                        if [ "$result" = "1" ]
+                        then
+                            echo "TEST PASSED"
+                        else
+                            echo "TEST FAILED ! ! !"
+                            exit 1
+                        fi  
+                '''
+            }
+        }
+        
+        stage('artifact-to-web-servers') {
+            steps {
+              
+               sshagent(['ansible-master']) {
+                   sh '''
+                        git clone https://github.com/mirexcool/final_project_ansible.git /home/ec2-user/ansible
+                        cp blog-app.war /home/ec2-user/ansible/ROOT.war
+                        cd /home/ec2-user/ansible
+                        ansible-playbook deploy_war.yml
+                        rm -f ROOT.war
+                        cd /home/ec2-user
+                        sudo rm -r ansible
+                   '''
+                }
+            }
+        }
+    }
+}
