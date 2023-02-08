@@ -6,15 +6,17 @@ pipeline {
         stage('cloning-sources-fron-github') {
             steps {
 			script {
-		    echo 'Start clonning remote repository . . . '
-			def br = "${DEV_BRANCH}"
-		    if ( br == true) {
-                	git branch: 'dev', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
-		    } else {
-			git branch: 'main', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
-		    }
-                echo 'Finished clonning remote repository . . . '
-			}
+                echo 'Start clonning remote repository . . . '
+                def br = "${DEV_BRANCH}"
+                if ( br == true) {
+                        echo 'Cloning dev branch . . . '
+                        git branch: 'dev', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
+                } else {
+                    echo 'Cloning main branch . . . '
+                    git branch: 'main', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
+                }
+                    echo 'Finished clonning remote repository . . . '
+                }
             }
         }
         
@@ -61,10 +63,18 @@ pipeline {
             }
         }
 
-        stage ('procced-to-test-stage?') {
+        stage ('procced-to-test-stage') {
             steps {
-                input 'Do you want to continue? You will launch CD proccess . . .'
-                build 'Final_Project_CD'
+                script {
+                    if ( br == true) {
+                        input 'Do you want to continue? You will launch CD proccess . . .'
+                        build 'Final_Project_CD'
+                    } else {
+                        build 'Final_Project_CD'
+                    }
+                }
+            }
+                
             }
         }
     }
