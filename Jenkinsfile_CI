@@ -7,7 +7,7 @@ pipeline {
             steps {
 			script {
 		    echo 'Start clonning remote repository . . . '
-		    if (${DEV_BRANCH} == true) {
+		    if (true) {
                 	git branch: 'dev', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
 		    } else {
 			git branch: 'main', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
