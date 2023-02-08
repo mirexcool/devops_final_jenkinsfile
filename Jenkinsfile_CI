@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('cloning-sources-fron-github') {
             steps {
-		    echo "${LAST_TRIGGERED_JOB_NAME }"
+		    echo "${DEV_BRANCH}"
                 echo 'Start clonning remote repository . . . '
                 git branch: 'dev', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
                 echo 'Finished clonning remote repository . . . '
