@@ -5,18 +5,18 @@ pipeline {
     stages {
         stage('cloning-sources-fron-github') {
             steps {
-			script {
-                echo 'Start clonning remote repository . . . '
-                def br = "${DEV_BRANCH}"
-                if ( br == true) {
-                        echo 'Cloning dev branch . . . '
-                        git branch: 'dev', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
-                } else {
-                    echo 'Cloning main branch . . . '
-                    git branch: 'main', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
-                }
-                    echo 'Finished clonning remote repository . . . '
-                }
+                script {
+                    echo 'Start clonning remote repository . . . '
+                    def br = "${DEV_BRANCH}"
+                    if ( br == true) {
+                            echo 'Cloning dev branch . . . '
+                            git branch: 'dev', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
+                    } else {
+                        echo 'Cloning main branch . . . '
+                        git branch: 'main', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
+                    }
+                        echo 'Finished clonning remote repository . . . '
+                    }
             }
         }
         
@@ -73,8 +73,6 @@ pipeline {
                         build 'Final_Project_CD'
                     }
                 }
-            }
-                
             }
         }
     }
