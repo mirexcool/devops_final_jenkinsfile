@@ -5,7 +5,10 @@ pipeline {
     stages {
         stage('cloning-sources-fron-github') {
             steps {
-		    echo 'CURRENT BRANCH IS ${BUILD_ID}'
+		    echo ${BUILD_ID}
+echo ${BUILD_ID}
+echo ${BUILD_ID}
+echo ${BUILD_ID}
                 echo 'Start clonning remote repository . . . '
                 git branch: 'dev', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
                 echo 'Finished clonning remote repository . . . '
@@ -14,7 +17,6 @@ pipeline {
         
         stage('Code-static-analysis') {
             steps {
-echo 'CURRENT BRANCH IS ${BUILD_ID}'
                 script{
                     def continueBuild = true
                     // Here we can launch some modules to check the code for syntax error or other.
