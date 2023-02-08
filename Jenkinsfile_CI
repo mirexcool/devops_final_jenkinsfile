@@ -8,7 +8,7 @@ pipeline {
                 script {
                     echo 'Start clonning remote repository . . . '
                     def br = "${DEV_BRANCH}"
-                    if ( br == true) {
+                    if ( br == "true") {
                             echo 'Cloning dev branch . . . '
                             git branch: 'dev', credentialsId: 'github-ssh-key', url: 'git@github.com:mirexcool/devops_final_project.git'
                     } else {
@@ -66,7 +66,8 @@ pipeline {
         stage ('procced-to-test-stage') {
             steps {
                 script {
-                    if ( br == true) {
+                    def br = "${DEV_BRANCH}"
+                    if ( br == "true") {
                         input 'Do you want to continue? You will launch CD proccess . . .'
                         build 'Final_Project_CD'
                     } else {
