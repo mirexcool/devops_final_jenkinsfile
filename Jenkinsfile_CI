@@ -71,6 +71,7 @@ pipeline {
                         input 'Do you want to continue? You will launch CD proccess . . .'
                         build 'Final_Project_CD'
                     } else {
+                        build 'Final_Project_CDP'
                         build 'Final_Project_CD'
                     }
                 }

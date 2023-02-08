@@ -32,7 +32,7 @@ pipeline {
 
         stage ('deploy-to-aws-ebs') {
             steps {
-                input 'Do you want to continue?'
+                
                 build 'DeployToBeanstalk'
             }
         }
