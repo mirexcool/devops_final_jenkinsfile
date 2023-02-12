@@ -1,3 +1,5 @@
+Link to presentation - https://docs.google.com/presentation/d/1o1YAVcYOdeAX_9OybjtPoBULJSgz5B4q6V-e5W4vhLw/edit?usp=sharing
+
 In this repository located all Jenkinsfiles for CI/CD pipeline for CV_DevOps(7_L1) Final project.
 
 ---------------
@@ -12,3 +14,14 @@ Jenkinsfile_CD:
 ---------------
 Jenkinsfile_CDP:
     This file takes the latest artifact and deliver it to production stage (updating version).
+
+###############
+
+The source code for Java webapp located in this repository - https://github.com/mirexcool/devops_final_project
+
+Terraform code located in this repositiry - https://github.com/mirexcool/devops_final_project_terraform
+
+Ansible code located in this repositiry - https://github.com/mirexcool/final_project_ansible
+
+###############
+
